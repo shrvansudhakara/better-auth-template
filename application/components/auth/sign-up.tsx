@@ -120,8 +120,8 @@ export default function SignUp() {
                   <Image
                     src={imagePreview}
                     alt="Profile preview"
-                    layout="fill"
-                    objectFit="cover"
+                    fill
+                    className="object-cover"
                   />
                 </div>
               )}
