@@ -50,7 +50,35 @@ export default function SignUp() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="grid gap-4">
+        <form
+          className="grid gap-4"
+          onSubmit={async (e) => {
+            e.preventDefault();
+            if (password !== passwordConfirmation) {
+              toast.error("Passwords do not match");
+              return;
+            }
+            await signUp.email({
+              email,
+              password,
+              name: `${firstName} ${lastName}`,
+              image: image ? await convertImageToBase64(image) : "",
+              callbackURL: "/dashboard",
+              fetchOptions: {
+                onResponse: () => setLoading(false),
+                onRequest: () => setLoading(true),
+                onError: (ctx) => {
+                  setLoading(false);
+                  toast.error(ctx.error.message);
+                },
+                onSuccess: () => {
+                  setLoading(false);
+                  router.push("/dashboard");
+                },
+              },
+            });
+          }}
+        >
           <div className="grid grid-cols-2 gap-4">
             <div className="grid gap-2">
               <Label htmlFor="first-name">First name</Label>
@@ -145,43 +173,14 @@ export default function SignUp() {
               </div>
             </div>
           </div>
-          <Button
-            type="submit"
-            className="w-full"
-            disabled={loading}
-            onClick={async () => {
-              await signUp.email({
-                email,
-                password,
-                name: `${firstName} ${lastName}`,
-                image: image ? await convertImageToBase64(image) : "",
-                callbackURL: "/dashboard",
-                fetchOptions: {
-                  onResponse: () => {
-                    setLoading(false);
-                  },
-                  onRequest: () => {
-                    setLoading(true);
-                  },
-                  onError: (ctx) => {
-                    setLoading(false);
-                    toast.error(ctx.error.message);
-                  },
-                  onSuccess: () => {
-                    setLoading(false);
-                    router.push("/dashboard");
-                  },
-                },
-              });
-            }}
-          >
+          <Button type="submit" className="w-full" disabled={loading}>
             {loading ? (
               <Loader2 size={16} className="animate-spin" />
             ) : (
               "Create your account"
             )}
           </Button>
-        </div>
+        </form>
       </CardContent>
     </Card>
   );
