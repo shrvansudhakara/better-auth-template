@@ -164,9 +164,11 @@ export default function SignUp() {
                     setLoading(true);
                   },
                   onError: (ctx) => {
+                    setLoading(false);
                     toast.error(ctx.error.message);
                   },
                   onSuccess: () => {
+                    setLoading(false);
                     router.push("/dashboard");
                   },
                 },
