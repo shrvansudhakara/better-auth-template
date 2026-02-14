@@ -162,13 +162,17 @@ export default function SignUp() {
                   className="w-full"
                 />
                 {imagePreview && (
-                  <X
+                  <button
+                    type="button"
+                    aria-label="Remove profile image"
                     className="cursor-pointer"
                     onClick={() => {
                       setImage(null);
                       setImagePreview(null);
                     }}
-                  />
+                  >
+                    <X />
+                  </button>
                 )}
               </div>
             </div>
