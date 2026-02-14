@@ -2,13 +2,18 @@
 import { Button } from "@/components/ui/button";
 import { authClient } from "@/lib/auth/auth-client";
 import { useRouter } from "next/navigation";
-import { notFound } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function Home() {
   const router = useRouter();
   const { data: session, isPending } = authClient.useSession();
   const [isSigningOut, setIsSigningOut] = useState(false);
+
+  useEffect(() => {
+    if (!isPending && !session && !isSigningOut) {
+      router.replace("/signin");
+    }
+  }, [isPending, session, isSigningOut, router]);
 
   const handleSignOut = async () => {
     setIsSigningOut(true);
@@ -30,9 +35,13 @@ export default function Home() {
     );
   }
 
-  // Show 404 if not authenticated (stays on /dashboard) except in the process of signing out
+  // Show redirecting state if not authenticated
   if (!session && !isSigningOut) {
-    notFound();
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="text-lg">Redirecting...</div>
+      </div>
+    );
   }
 
   // Show loading state during sign out
