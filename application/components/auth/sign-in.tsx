@@ -33,7 +33,25 @@ export default function SignIn() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="grid gap-4">
+        <form
+          className="grid gap-4"
+          onSubmit={async (e) => {
+            e.preventDefault();
+            await signIn.email({
+              email,
+              password,
+              rememberMe,
+              fetchOptions: {
+                onRequest: () => {
+                  setLoading(true);
+                },
+                onResponse: () => {
+                  setLoading(false);
+                },
+              },
+            });
+          }}
+        >
           <div className="grid gap-2">
             <Label htmlFor="email">Email</Label>
             <Input
@@ -74,29 +92,7 @@ export default function SignIn() {
             />
             <Label htmlFor="remember">Remember me</Label>
           </div>
-          <Button
-            type="submit"
-            className="w-full"
-            disabled={loading}
-            onClick={async () => {
-              await signIn.email({
-                email,
-                password,
-                rememberMe,
-                fetchOptions: {
-                  onRequest: () => {
-                    setLoading(true);
-                  },
-                  onResponse: () => {
-                    setLoading(false);
-                  },
-                  onError: () => {
-                    setLoading(false);
-                  },
-                },
-              });
-            }}
-          >
+          <Button type="submit" className="w-full" disabled={loading}>
             {loading ? (
               <Loader2 size={16} className="animate-spin" />
             ) : (
@@ -110,6 +106,7 @@ export default function SignIn() {
             )}
           >
             <Button
+              type="button"
               variant="outline"
               className="w-full gap-2"
               disabled={loading}
@@ -157,6 +154,7 @@ export default function SignIn() {
               Sign in with Google
             </Button>
             <Button
+              type="button"
               variant="outline"
               className="w-full gap-2"
               disabled={loading}
@@ -192,7 +190,7 @@ export default function SignIn() {
               Sign in with Github
             </Button>
           </div>
-        </div>
+        </form>
       </CardContent>
     </Card>
   );
