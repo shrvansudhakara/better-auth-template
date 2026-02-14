@@ -48,6 +48,9 @@ export default function SignIn() {
                 onResponse: () => {
                   setLoading(false);
                 },
+                onError: () => {
+                  setLoading(false);
+                },
               },
             });
           }}
