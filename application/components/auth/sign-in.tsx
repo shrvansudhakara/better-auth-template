@@ -90,6 +90,9 @@ export default function SignIn() {
                   onResponse: () => {
                     setLoading(false);
                   },
+                  onError: () => {
+                    setLoading(false);
+                  },
                 },
               });
             }}
@@ -119,6 +122,9 @@ export default function SignIn() {
                       setLoading(true);
                     },
                     onResponse: () => {
+                      setLoading(false);
+                    },
+                    onError: () => {
                       setLoading(false);
                     },
                   },
@@ -163,6 +169,9 @@ export default function SignIn() {
                       setLoading(true);
                     },
                     onResponse: () => {
+                      setLoading(false);
+                    },
+                    onError: () => {
                       setLoading(false);
                     },
                   },
